@@ -8,8 +8,8 @@ export const App: React.StatelessComponent<{}> = (props: Props<string>) => {
   return (
     <div>
       <Header title="Multiline Chart" />
-      <MultiLineChart />
-      <Table />
+      <MultiLineChart tsvPath="assets/data.tsv" width="600" height="300" />
+      <Table tsvPath="assets/data.tsv" />
     </div>
   );
 }

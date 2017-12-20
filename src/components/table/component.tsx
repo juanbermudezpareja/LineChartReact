@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { TableComponent } from './page';
 
 interface Props {
-
+    tsvPath: string;
 }
 
 interface State {
@@ -16,6 +16,9 @@ interface RowTable {
 }
 
 export class Table extends React.Component<Props, State> {
+    constructor(props) {
+        super(props);
+    }
     componentDidMount() {
         const tabulate = function (data, columns) {
             const table = d3.select('#tableComponent').append('table').attr("class", "table text-center");
@@ -47,7 +50,7 @@ export class Table extends React.Component<Props, State> {
             return table;
         }
 
-        d3.tsv('assets/data.tsv', function (data) {
+        d3.tsv(this.props.tsvPath, function (data) {
             const columns = data.columns;
             tabulate(data, columns)
         })

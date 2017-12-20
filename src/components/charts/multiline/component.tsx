@@ -3,7 +3,9 @@ import * as d3 from 'd3';
 import { MultiLineChartComponent } from './page';
 
 interface Props {
-
+    tsvPath: string;
+    width: string;
+    height: string;
 }
 
 interface State {
@@ -11,6 +13,9 @@ interface State {
 }
 
 export class MultiLineChart extends React.Component<Props, State> {
+    constructor(props) {
+        super(props);
+    }
     componentDidMount() {
         const svg: any = d3.select("svg");
         const margin: any = { top: 20, right: 80, bottom: 30, left: 50 };
@@ -29,7 +34,7 @@ export class MultiLineChart extends React.Component<Props, State> {
             .x((d) => x(d["axisX"]))
             .y((d) => y(d["axisY"]));
 
-        d3.tsv("assets/data.tsv", type, function (error, data) {
+        d3.tsv(this.props.tsvPath, type, function (error, data) {
             if (error) throw error;
 
             const axisXColName = data.columns[0];
@@ -93,7 +98,7 @@ export class MultiLineChart extends React.Component<Props, State> {
     }
     render() {
         return (
-            <MultiLineChartComponent width="500" height="300"/>
+            <MultiLineChartComponent tsvPath={this.props.tsvPath} width={this.props.width} height={this.props.height} />
         );
     }
 }

@@ -4,6 +4,7 @@ import * as React from 'react';
 interface Props {
     width: string;
     height: string;
+    tsvPath: string;
 }
 
 
@@ -13,5 +14,6 @@ export const MultiLineChartComponent = (props: Props) => (
             <svg width={props.width} height={props.height} ></svg>
         </div>
     </div>
+    
 );
 
