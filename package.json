@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "prod": "NODE_ENV=production node server.js",
-    "postinstall": "webpack -p",
+    "postinstall": "./node_modules/webpack/bin/webpack -p",
     "build": "webpack",
     "test": "karma start --single-run",
     "test:watch": "karma start --no-single-run"
