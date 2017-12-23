@@ -4,7 +4,7 @@ import { Header } from './components/header/page';
 import { Props } from 'react';
 import { Table } from './components/table/component';
 
-export const App: React.StatelessComponent<{}> = (props: Props<string>) => {
+export const App: React.StatelessComponent = () => {
   return (
     <div>
       <Header title="Multiline Chart" />
