@@ -4,7 +4,7 @@
   "description": "Sample working with React,TypeScript and Webpack",
   "main": "index.js",
   "scripts": {
-    "start": "webpack.config.js --exec webpack-dev-server --inline",
+    "start": "nodemon --watch webpack.config.js --exec webpack-dev-server --inline",
     "build": "rimraf dist && webpack",
     "build:prod": "rimraf dist && webpack -p",
     "test": "karma start --single-run",
