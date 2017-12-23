@@ -69,6 +69,8 @@ module.exports = {
   // For development https://webpack.js.org/configuration/devtool/#for-development
   devtool: 'inline-source-map',
   devServer: {
+    contentBase: './dist', // Content base
+    inline: true, // Enable watch and live reload
     port: process.env.PORT || 3000 
   },
   plugins: [
