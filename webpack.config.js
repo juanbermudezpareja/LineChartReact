@@ -69,8 +69,7 @@ module.exports = {
   // For development https://webpack.js.org/configuration/devtool/#for-development
   devtool: 'inline-source-map',
   devServer: {
-    port: 8080,
-    noInfo: true,
+    port: process.env.PORT || 3000 
   },
   plugins: [
     //Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin
