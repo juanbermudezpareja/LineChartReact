@@ -1,7 +1,7 @@
 var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var basePath = __dirname;
 
@@ -11,7 +11,7 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx']
   },
   entry: {
-    app: './index.tsx',
+    app: './main.tsx',
     appStyles: './css/site.css',
     vendor: [
       'react',
@@ -28,7 +28,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         loader: 'awesome-typescript-loader',
         options: {
@@ -64,24 +64,27 @@ module.exports = {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
       },
-    ],
+    ]
   },
-  // For development https://webpack.js.org/configuration/devtool/#for-development
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   devServer: {
-    contentBase: './dist', // Content base
+    //contentBase: './dist', // Content base
     inline: true, // Enable watch and live reload
-    port: process.env.PORT || 3000 
+    host: 'localhost',
+    port: 8080,
+    noInfo: true,
   },
   plugins: [
-    //Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin
+    // Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: 'index.html', //Name of file in ./dist/
-      template: 'index.html', //Name of template in ./src
-      hash: true,
+      filename: 'index.html', // Name of file in ./dist/
+      template: 'index.html', // Name of template in ./src
+      hash: true
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest'],
+    new ExtractTextPlugin({
+      filename: '[chunkhash].[name].css',
+      disable: false,
+      allChunks: true,
     }),
-  ],
-};
+  ]
+}

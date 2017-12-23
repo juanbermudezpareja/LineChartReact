@@ -50,6 +50,7 @@ export class Table extends React.Component<Props, State> {
             return table;
         }
 
+        console.log(this.props.tsvPath);
         d3.tsv(this.props.tsvPath, function (data) {
             const columns = data.columns;
             tabulate(data, columns)
