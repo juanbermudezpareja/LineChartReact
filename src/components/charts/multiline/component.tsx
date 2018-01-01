@@ -86,19 +86,19 @@ export class MultiLineChart extends React.Component<Props, {}> {
                 .text((d) => d.id);
         });
 
-        function type(d, _, columns) {
-            d[columns[0]] = parseTime(d[columns[0]]);
-            for (let i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
-            return d;
+        function type(row, _, cols) {
+            row[cols[0]] = parseTime(row[cols[0]]);
+            for (let i = 1; i < cols.length; ++i) {
+                row[cols[i]] = +row[cols[i]];
+            }
+            return row;
         }
     }
     render() {
         return (
             <div className="container">
                 <div className="jumbotron">
-                    <svg width={this.props.width} height={this.props.height} >
-                        <g transform="translate(50,20)"></g>
-                    </svg>
+                    <svg width={this.props.width} height={this.props.height} ></svg>
                 </div>
             </div>
         );
