@@ -5,17 +5,12 @@ import { Props } from 'react';
 import { Table } from './components/table/component';
 import * as d3 from 'd3';
 
-export const App: React.StatelessComponent<{}> = (props: Props<string>) => {
-  
-  d3.tsv('assets/data.tsv',(data)=>{
-    console.log(data);
-  });
-  
+export const App: React.StatelessComponent = () => { 
   return (
     <div>
       <Header title="Multiline Chart" />
-      <MultiLineChart tsvPath="assets/data.tsv" width="600" height="300" />
-      <Table tsvPath="assets/data.tsv" />
+      <MultiLineChart tsvPath="assets/data.2.tsv" yAxisLabel="Price, €" width="600" height="300" />
+      <Table tsvPath="assets/data.2.tsv" />
     </div>
   );
 }
