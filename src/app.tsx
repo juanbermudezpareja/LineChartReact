@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MultiLineChart } from './components/charts/multiline/component'
+import { MultiLineChart } from './components/charts/multilinechart/component'
 import { Header } from './components/header/page';
 import { Props } from 'react';
 import { Table } from './components/table/component';
