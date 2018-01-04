@@ -9,7 +9,7 @@ export const App: React.StatelessComponent = () => {
   return (
     <div>
       <Header title="Multiline Chart" />
-      <MultiLineChart tsvPath="assets/data.2.tsv" yAxisLabel="Price, €" width="600" height="300" />
+      <MultiLineChart tsvPath="assets/data.2.tsv" yAxisLabel="Price, €" width="600" height="400" />
       <Table tsvPath="assets/data.2.tsv" />
     </div>
   );

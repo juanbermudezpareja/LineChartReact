@@ -9,18 +9,12 @@ interface Props {
     height: string;
 }
 
-interface ObjData {
-    key: string;
-    axisX: string;
-    axisY: string;
-}
-
 export class MultiLineChart extends React.Component<Props, {}> {
     constructor(props) {
         super(props);
     }
     componentDidMount() {
-        var data = [{
+        const data = [{
             "Client": "ABC",
             "sale": "202",
             "year": "2000"
@@ -70,60 +64,64 @@ export class MultiLineChart extends React.Component<Props, {}> {
             "year": "2013"
         }];
 
+        var data1 = [{
+            "sale": "202",
+            "year": "2000"
+        }, {
+            "sale": "215",
+            "year": "2001"
+        }, {
+            "sale": "179",
+            "year": "2002"
+        }, {
+            "sale": "199",
+            "year": "2003"
+        }, {
+            "sale": "134",
+            "year": "2003"
+        }, {
+            "sale": "176",
+            "year": "2010"
+        }];
+
         const fields = Object.keys(data[0]);
 
         const dataGroup = d3.nest().key((d) => d[fields[0]]).entries(data);
 
         let vis = d3.select("#visualisation"),
-            WIDTH = 1000,
-            HEIGHT = 500,
+            WIDTH = +this.props.width,
+            HEIGHT = +this.props.height,
             MARGINS = {
                 top: 20,
                 right: 20,
                 bottom: 20,
                 left: 50
             };
-        const xScale = d3.scaleLinear().range([MARGINS.left, WIDTH - MARGINS.right]).domain(d3.extent(data, (d) => d[fields[1]]));
-        const yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain(d3.extent(data, (d) => d[fields[2]]));
+            
+        const xScale = d3.scaleLinear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([+d3.min(data, (d) => d[fields[2]]),+d3.max(data, (d) => d[fields[2]])]);
+        const yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([+d3.min(data, (d) => d[fields[1]]),+d3.max(data, (d) => d[fields[1]])]);
         const xAxis = d3.axisBottom(xScale);
         const yAxis = d3.axisLeft(yScale);
 
-        vis.append("svg:g")
-            .call(xAxis);
+        const lineGen = d3.line().curve(d3.curveBasis)
+            .x((d) => xScale(d[fields[2]]))
+            .y((d) => yScale(d[fields[1]]));
 
         vis.append("svg:g")
             .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
             .call(xAxis);
 
-
         vis.append("svg:g")
             .attr("transform", "translate(" + (MARGINS.left) + ",0)")
             .call(yAxis);
-
-        var lineGen = d3.line().curve(d3.curveBasis)
-            .x((d) => xScale(d[fields[1]]))
-            .y((d) => yScale(d[fields[2]]));
 
         dataGroup.forEach(function (d, i) {
             vis.append('svg:path')
                 .attr('d', lineGen(d.values))
-                .attr('stroke', (d, j) =>
-                    "hsl(" + Math.random() * 360 + ",100%,50%)"
-                )
+                .attr('stroke', (d, j) => "hsl(" + Math.random() * 360 + ",100%,50%)")
                 .attr('stroke-width', 2)
                 .attr('fill', 'none');
         });
-
-        vis.append("svg:g")
-            .attr("class", "axis")
-            .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
-            .call(xAxis);
-
-        vis.append("svg:g")
-            .attr("class", "axis")
-            .attr("transform", "translate(" + (MARGINS.left) + ",0)")
-            .call(yAxis);
-
     }
     render() {
         return (
