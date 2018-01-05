@@ -4,7 +4,6 @@ import { ScaleTime, ScaleLinear, ScaleOrdinal, Line, Selection, DSVRowString, Ax
 
 interface Props {
     tsvPath: string;
-    yAxisLabel: string;
     width: string;
     height: string;
 }
@@ -15,51 +14,51 @@ export class MultiLineChart extends React.Component<Props, {}> {
     }
     componentDidMount() {
         const data = [{
-            "Client": "ABC",
+            "Client": "Ericsson",
             "year": "2000",
             "sale": "202",
         }, {
-            "Client": "ABC",
+            "Client": "Ericsson",
             "year": "2002",
             "sale": "215",
         }, {
-            "Client": "ABC",
+            "Client": "Ericsson",
             "year": "2004",
             "sale": "179",
         }, {
-            "Client": "ABC",
+            "Client": "Ericsson",
             "year": "2006",
             "sale": "199",
         }, {
-            "Client": "ABC",
+            "Client": "Ericsson",
             "year": "2008",
             "sale": "134",
         }, {
-            "Client": "ABC",
+            "Client": "Ericsson",
             "year": "2010",
             "sale": "176",
         }, {
-            "Client": "XYZ",
+            "Client": "Huawei",
             "year": "2000",
             "sale": "100",
         }, {
-            "Client": "XYZ",
+            "Client": "Huawei",
             "year": "2002",
             "sale": "215",
         }, {
-            "Client": "XYZ",
+            "Client": "Huawei",
             "year": "2004",
             "sale": "179",
         }, {
-            "Client": "XYZ",
+            "Client": "Huawei",
             "year": "2006",
             "sale": "199",
         }, {
-            "Client": "XYZ",
+            "Client": "Huawei",
             "year": "2008",
             "sale": "134",
         }, {
-            "Client": "XYZ",
+            "Client": "Huawei",
             "year": "2013",
             "sale": "176",
         }];
@@ -75,7 +74,7 @@ export class MultiLineChart extends React.Component<Props, {}> {
 
         const margins: any = {
             top: 20,
-            right: 20,
+            right: 60,
             bottom: 20,
             left: 50
         };
@@ -91,31 +90,30 @@ export class MultiLineChart extends React.Component<Props, {}> {
 
         vis.append("svg:g")
             .attr("transform", "translate(0," + (+this.props.height - margins.bottom) + ")")
-            .call(xAxis)
+            .call(xAxis) // Drawing axis X
             .append("text")            
-            .attr("y", "-4")
-            .attr("dx", "58em")
+            .attr("x", "555")
             .attr("fill", "#000")
-            .text(objX);
+            .text(objX); // Text column X
 
         vis.append("svg:g")
             .attr("transform", "translate(" + (margins.left) + ",0)")
-            .call(yAxis)
+            .call(yAxis) // Drawing axis Y
             .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", "0.71em")
             .attr("fill", "#000")
-            .text(objY);
-
-  
+            .text(objY); // Text column Y
 
         dataGroup.forEach((d, i) => {
             vis.append('svg:path')
                 .attr('d', lineGen(d.values))
                 .attr('stroke', (d, j) => "hsl(" + Math.random() * 360 + ",100%,50%)")
                 .attr('stroke-width', 2)
-                .attr('fill', 'none')            
+                .attr('fill', 'none');
+            vis.append('svg:text')  
+                .attr("transform", "translate(" + xScale(d.values[d.values.length-1][objX]) + "," + yScale(d.values[d.values.length-1][objY]) + ")")                          
+                .style("font", "10px sans-serif")          
+                .text(d.key); // Showing data keys
         });
     }
     render() {

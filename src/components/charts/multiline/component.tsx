@@ -4,7 +4,6 @@ import { ScaleTime, ScaleLinear, ScaleOrdinal, Line, Selection, DSVRowString } f
 
 interface Props {
     tsvPath: string;
-    yAxisLabel: string;
     width: string;
     height: string;
 }
@@ -65,7 +64,7 @@ export class MultiLineChart extends React.Component<Props, {}> {
                 .attr("y", 6)
                 .attr("dy", "0.71em")
                 .attr("fill", "#000")
-                .text(this.props.yAxisLabel);
+                .text("Temperature, ºC");
 
             const dataCol = g.selectAll(".dataCol")
                 .data(dataColumns)
