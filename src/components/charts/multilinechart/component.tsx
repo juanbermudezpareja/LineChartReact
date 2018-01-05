@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as d3 from 'd3';
-import { ScaleTime, ScaleLinear, ScaleOrdinal, Line, Selection, DSVRowString } from 'd3';
+import { ScaleTime, ScaleLinear, ScaleOrdinal, Line, Selection, DSVRowString, Axis } from 'd3';
 
 interface Props {
     tsvPath: string;
@@ -16,111 +16,106 @@ export class MultiLineChart extends React.Component<Props, {}> {
     componentDidMount() {
         const data = [{
             "Client": "ABC",
+            "year": "2000",
             "sale": "202",
-            "year": "2000"
         }, {
             "Client": "ABC",
+            "year": "2002",
             "sale": "215",
-            "year": "2002"
         }, {
             "Client": "ABC",
+            "year": "2004",
             "sale": "179",
-            "year": "2004"
         }, {
             "Client": "ABC",
+            "year": "2006",
             "sale": "199",
-            "year": "2006"
         }, {
             "Client": "ABC",
+            "year": "2008",
             "sale": "134",
-            "year": "2008"
         }, {
             "Client": "ABC",
+            "year": "2010",
             "sale": "176",
-            "year": "2010"
         }, {
             "Client": "XYZ",
+            "year": "2000",
             "sale": "100",
-            "year": "2000"
         }, {
             "Client": "XYZ",
+            "year": "2002",
             "sale": "215",
-            "year": "2002"
         }, {
             "Client": "XYZ",
+            "year": "2004",
             "sale": "179",
-            "year": "2004"
         }, {
             "Client": "XYZ",
+            "year": "2006",
             "sale": "199",
-            "year": "2006"
         }, {
             "Client": "XYZ",
+            "year": "2008",
             "sale": "134",
-            "year": "2008"
         }, {
             "Client": "XYZ",
+            "year": "2013",
             "sale": "176",
-            "year": "2013"
         }];
 
-        var data1 = [{
-            "sale": "202",
-            "year": "2000"
-        }, {
-            "sale": "215",
-            "year": "2001"
-        }, {
-            "sale": "179",
-            "year": "2002"
-        }, {
-            "sale": "199",
-            "year": "2003"
-        }, {
-            "sale": "134",
-            "year": "2003"
-        }, {
-            "sale": "176",
-            "year": "2010"
-        }];
+        const fields: any = Object.keys(data[0]);
+        const objKey = fields[0];
+        const objX = fields[1];
+        const objY = fields[2];
 
-        const fields = Object.keys(data[0]);
+        const dataGroup: any = d3.nest().key((d) => d[objKey]).entries(data);
 
-        const dataGroup = d3.nest().key((d) => d[fields[0]]).entries(data);
+        const vis: Selection<Element, {}, HTMLElement, any> = d3.select("#visualisation");
 
-        let vis = d3.select("#visualisation"),
-            WIDTH = +this.props.width,
-            HEIGHT = +this.props.height,
-            MARGINS = {
-                top: 20,
-                right: 20,
-                bottom: 20,
-                left: 50
-            };
-            
-        const xScale = d3.scaleLinear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([+d3.min(data, (d) => d[fields[2]]),+d3.max(data, (d) => d[fields[2]])]);
-        const yScale = d3.scaleLinear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([+d3.min(data, (d) => d[fields[1]]),+d3.max(data, (d) => d[fields[1]])]);
-        const xAxis = d3.axisBottom(xScale);
-        const yAxis = d3.axisLeft(yScale);
+        const margins: any = {
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 50
+        };
 
-        const lineGen = d3.line().curve(d3.curveBasis)
-            .x((d) => xScale(d[fields[2]]))
-            .y((d) => yScale(d[fields[1]]));
+        const xScale: ScaleLinear<number, number> = d3.scaleLinear().range([margins.left, +this.props.width - margins.right]).domain([d3.min(data, (d) => d[objX]), d3.max(data, (d) => d[objX])]);
+        const yScale: ScaleLinear<number, number> = d3.scaleLinear().range([+this.props.height - margins.top, margins.bottom]).domain([d3.min(data, (d) => d[objY]), d3.max(data, (d) => d[objY])]);
+        const xAxis: Axis<{}> = d3.axisBottom(xScale);
+        const yAxis: Axis<{}> = d3.axisLeft(yScale);
+
+        const lineGen: Line<[number, number]> = d3.line().curve(d3.curveBasis)
+            .x((d) => xScale(d[objX]))
+            .y((d) => yScale(d[objY]));
 
         vis.append("svg:g")
-            .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
-            .call(xAxis);
+            .attr("transform", "translate(0," + (+this.props.height - margins.bottom) + ")")
+            .call(xAxis)
+            .append("text")            
+            .attr("y", "-4")
+            .attr("dx", "58em")
+            .attr("fill", "#000")
+            .text(objX);
 
         vis.append("svg:g")
-            .attr("transform", "translate(" + (MARGINS.left) + ",0)")
-            .call(yAxis);
+            .attr("transform", "translate(" + (margins.left) + ",0)")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", "0.71em")
+            .attr("fill", "#000")
+            .text(objY);
 
-        dataGroup.forEach(function (d, i) {
+  
+
+        dataGroup.forEach((d, i) => {
             vis.append('svg:path')
                 .attr('d', lineGen(d.values))
                 .attr('stroke', (d, j) => "hsl(" + Math.random() * 360 + ",100%,50%)")
                 .attr('stroke-width', 2)
-                .attr('fill', 'none');
+                .attr('fill', 'none')            
         });
     }
     render() {

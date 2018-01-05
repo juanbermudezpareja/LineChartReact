@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as d3 from 'd3';
-import { TableComponent } from './page';
 
 interface Props {
     tsvPath: string;
@@ -58,7 +57,11 @@ export class Table extends React.Component<Props, State> {
     }
     render() {
         return (
-            <TableComponent />
+            <div className="container">
+                <div className="jumbotron">
+                    <div id="tableComponent" className="table-responsive"></div>
+                </div>
+            </div>
         );
     }
 }
