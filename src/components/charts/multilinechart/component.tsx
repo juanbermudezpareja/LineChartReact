@@ -91,7 +91,7 @@ export class MultiLineChart extends React.Component<Props, {}> {
         vis.append("svg:g")
             .attr("transform", "translate(0," + (+this.props.height - margins.bottom) + ")")
             .call(xAxis) // Drawing axis X
-            .append("text")            
+            .append("text")
             .attr("x", "555")
             .attr("fill", "#000")
             .text(objX); // Text column X
@@ -110,11 +110,18 @@ export class MultiLineChart extends React.Component<Props, {}> {
                 .attr('stroke', (d, j) => "hsl(" + Math.random() * 360 + ",100%,50%)")
                 .attr('stroke-width', 2)
                 .attr('fill', 'none');
-            vis.append('svg:text')  
-                .attr("transform", "translate(" + xScale(d.values[d.values.length-1][objX]) + "," + yScale(d.values[d.values.length-1][objY]) + ")")                          
-                .style("font", "10px sans-serif")          
+            vis.append('svg:text')
+                .attr("transform", "translate(" + xScale(d.values[d.values.length - 1][objX]) + "," + yScale(d.values[d.values.length - 1][objY]) + ")")
+                .style("font", "10px sans-serif")
                 .text(d.key); // Showing data keys
         });
+
+        console.log(data);
+
+        d3.tsv(this.props.tsvPath, (error, data) => {
+            console.log(data);
+        });
+        
     }
     render() {
         return (
