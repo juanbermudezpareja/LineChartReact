@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MultiLineChart } from './components/charts/multiline/component'
+import { MultiLineChart } from './components/charts/multilinechart/component'
 import { Header } from './components/header/page';
 import { Props } from 'react';
 import { Table } from './components/table/component';
@@ -9,7 +9,7 @@ export const App: React.StatelessComponent = () => {
   return (
     <div>
       <Header title="Multiline Chart" />
-      <MultiLineChart tsvPath="assets/data.1.tsv" width="600" height="400" />
+      <MultiLineChart tsvPath="assets/data.1.tsv" dateFormat="%Y%m%d" width="800" height="400" />
       <Table tsvPath="assets/data.2.tsv" />
     </div>
   );

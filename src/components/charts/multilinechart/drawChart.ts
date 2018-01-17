@@ -9,20 +9,22 @@ export const drawChart = (data, width, height) => {
     const objY = fields[2];
 
     const dataGroup: any = d3.nest().key((d) => d[objKey]).entries(data);
-    const numDataAxisX = dataGroup[0].values.length > 10 ? 10 : dataGroup[0].values.length;
+    //const numDataAxisX = dataGroup[0].values.length > 10 ? 10 : dataGroup[0].values.length;
 
     const vis: Selection<Element, {}, HTMLElement, any> = d3.select("svg");
+    vis.attr("width",width);
+    vis.attr("height",height);
 
     const margins: any = {
         top: 20,
-        right: 60,
+        right: 90,
         bottom: 20,
         left: 50
     };
 
-    const xScale: ScaleLinear<number, number> = d3.scaleLinear().range([margins.left, width - margins.right]).domain([+d3.min(data, (d) => d[objX]), +d3.max(data, (d) => d[objX])]);
+    const xScale: ScaleTime<number, number> = d3.scaleTime().range([margins.left, width - margins.right - margins.left]).domain([+d3.min(data, (d) => d[objX]), +d3.max(data, (d) => d[objX])]);
     const yScale: ScaleLinear<number, number> = d3.scaleLinear().range([height - margins.top, margins.bottom]).domain([+d3.min(data, (d) => d[objY]), +d3.max(data, (d) => d[objY])]);
-    const xAxis: Axis<{}> = d3.axisBottom(xScale).ticks(numDataAxisX);
+    const xAxis: Axis<{}> = d3.axisBottom(xScale);
     const yAxis: Axis<{}> = d3.axisLeft(yScale);
 
     const lineGen: Line<[number, number]> = d3.line().curve(d3.curveBasis).x((d) => xScale(d[objX])).y((d) => yScale(d[objY]));
