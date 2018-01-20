@@ -17,8 +17,8 @@ export class MultiLineChart extends React.Component<Props, {}> {
     componentDidMount() {
         if (this.props.tsvPath !== void (0)) {
             d3.tsv(this.props.tsvPath, (error, data) => {
-                const dataTransformed = arrayTansform(data,this.props.dateFormat);
-                
+                const dataTransformed = arrayTansform(data, this.props.dateFormat);
+
                 drawChart(dataTransformed);
             });
         } else {
@@ -28,11 +28,7 @@ export class MultiLineChart extends React.Component<Props, {}> {
     }
     render() {
         return (
-            <div className="container">
-                <div className="jumbotron">
-                    <svg id="chart"></svg>
-                </div>
-            </div>
+            <svg id="chart"></svg>
         );
     }
 }
