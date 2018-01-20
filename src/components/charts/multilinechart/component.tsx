@@ -8,6 +8,7 @@ import { arrayTansform } from '../../../parser/transform';
 interface Props {
     tsvPath?: string;
     dateFormat?: string;
+    height?:string
 }
 
 export class MultiLineChart extends React.Component<Props, {}> {
@@ -18,12 +19,11 @@ export class MultiLineChart extends React.Component<Props, {}> {
         if (this.props.tsvPath !== void (0)) {
             d3.tsv(this.props.tsvPath, (error, data) => {
                 const dataTransformed = arrayTansform(data, this.props.dateFormat);
-
-                drawChart(dataTransformed);
+                drawChart(dataTransformed, this.props.height);
             });
         } else {
             // Hardcoded data
-            drawChart(dataHardcoded);
+            drawChart(dataHardcoded, this.props.height);
         }
     }
     render() {
