@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import { ScaleTime, ScaleLinear, ScaleOrdinal, Line, Selection, DSVRowString, Axis } from 'd3';
 
-export const drawChart = (data,heightUser) => {
+export const drawChart = (data, legendAxisY, heightUser) => {
+
     // Data
     const fields: any = Object.keys(data[0]);
     const objKey = fields[0];
@@ -16,8 +17,7 @@ export const drawChart = (data,heightUser) => {
     let height = heightUser - margins.top - margins.bottom;
 
     const svg: Selection<Element, {}, HTMLElement, any> = d3.select("#chart");
-    
-    svg.attr("height", heightUser);
+    svg.attr("height", height);
 
     // Scales, domain and axis
     const xScale: ScaleTime<number, number> = d3.scaleTime();
@@ -25,7 +25,7 @@ export const drawChart = (data,heightUser) => {
     xScale.domain(d3.extent(data, (d) => +d[objX]));
     yScale.domain(d3.extent(data, (d) => +d[objY]));
     xScale.range([margins.left, width]);
-    yScale.range([height - margins.bottom, 0]);
+    yScale.range([height - margins.bottom, margins.top]);
     const xAxis: Axis<{}> = d3.axisBottom(xScale);
     const yAxis: Axis<{}> = d3.axisLeft(yScale);
 
@@ -36,11 +36,6 @@ export const drawChart = (data,heightUser) => {
         .attr("class", "x axis")
         .attr("transform", "translate(0," + (height - margins.bottom) + ")")
         .call(xAxis) // Drawing axis X
-        .append("text")
-        .attr("class","text x axis")
-        .attr("x", width)
-        .attr("fill", "#000")
-        .text(objX); // Text column X
 
     svg.append("svg:g")
         .attr("class", "y axis")
@@ -49,13 +44,14 @@ export const drawChart = (data,heightUser) => {
         .append("text")
         .attr("transform", "rotate(-90)")
         .attr("fill", "#000")
-        .text(objY); // Text column Y
+        .attr("y",10)
+        .text(legendAxisY); // Text column Y
 
     dataGroup.forEach((d, i) => {
         svg.append('svg:path')
             .attr("class", "line" + i)
-            .attr('d', lineGen(d.values))
-            .attr('stroke', (d, j) => "hsl(" + i * 50 % 360 + ",100%,50%)")
+            .attr('d', lineGen(d.values)) // Drawing line
+            .attr('stroke', (d, j) => "hsl(" + i * 50 % 360 + ",100%,50%)")  // Setting color
             .attr('stroke-width', 2)
             .attr('fill', 'none');
         svg.append('svg:text')
@@ -72,7 +68,7 @@ export const drawChart = (data,heightUser) => {
 
         // Update the range of the scale with new width/height
         xScale.range([margins.left, width]);
-        yScale.range([height - margins.bottom, 0]);
+        yScale.range([height - margins.bottom, margins.top]);
 
         // Update the axis and text with the new scale
         svg.select('.x.axis')
@@ -81,10 +77,7 @@ export const drawChart = (data,heightUser) => {
         svg.select('.y.axis')
             .call(yAxis);
 
-        svg.select(".text.x.axis")
-        .attr("x", width)
-
-        // Force D3 to recalculate and update the line
+        // Force D3 to recalculate and update the line and text keys
         dataGroup.forEach((d, i) => {
             svg.select('.line' + i)
                 .attr('d', lineGen(d.values));
