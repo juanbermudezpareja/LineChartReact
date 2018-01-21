@@ -21,16 +21,16 @@ export class MultiLineChart extends React.Component<Props, {}> {
         if (this.props.tsvPath !== void (0)) {
             d3.tsv(this.props.tsvPath, (error, data) => {
                 const dataTransformed = arrayTansform(data, this.props.dateFormat);
-                drawChart(dataTransformed, this.props.legendAxisY, this.props.height);
+                drawChart(dataTransformed, this.props.legendAxisY, this.props.height, this.props.dateFormat);
             });
         } else if (this.props.csvPath !== void (0)) {
             d3.csv(this.props.csvPath, (error, data) => {
                 const dataTransformed = arrayTansform(data, this.props.dateFormat);
-                drawChart(dataTransformed, this.props.legendAxisY, this.props.height);
+                drawChart(dataTransformed, this.props.legendAxisY, this.props.height, this.props.dateFormat);
             });
         } else {
             // Hardcoded data
-            drawChart(dataHardcoded, this.props.legendAxisY, this.props.height);
+            drawChart(dataHardcoded, this.props.legendAxisY, this.props.height, this.props.dateFormat);
         }
     }
     render() {
