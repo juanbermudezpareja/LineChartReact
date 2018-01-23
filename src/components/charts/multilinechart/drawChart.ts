@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { ScaleTime, ScaleLinear, ScaleOrdinal, Line, Selection, DSVRowString, Axis } from 'd3';
 
-export const drawChart = (data, legendAxisY, heightUser) => {
+export const drawChart = (data, legendAxisY, heightUser, dateFormat) => {
 
     // Data
     const fields: any = Object.keys(data[0]);
@@ -29,8 +29,15 @@ export const drawChart = (data, legendAxisY, heightUser) => {
     const xAxis: Axis<{}> = d3.axisBottom(xScale);
     const yAxis: Axis<{}> = d3.axisLeft(yScale);
 
+    const parseTime = d3.timeFormat(dateFormat);
+
     // Lines
-    const lineGen: Line<[number, number]> = d3.line().curve(d3.curveBasis).x((d) => xScale(d[objX])).y((d) => yScale(d[objY]));
+    const lineGen: Line<[number, number]> = d3.line().x((d) => xScale(d[objX])).y((d) => yScale(d[objY]));
+
+    // Define the div for the tooltip
+    const div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
     svg.append("svg:g")
         .attr("class", "x axis")
@@ -44,7 +51,7 @@ export const drawChart = (data, legendAxisY, heightUser) => {
         .append("text")
         .attr("transform", "rotate(-90)")
         .attr("fill", "#000")
-        .attr("y",10)
+        .attr("y", 10)
         .text(legendAxisY); // Text column Y
 
     dataGroup.forEach((d, i) => {
@@ -59,6 +66,25 @@ export const drawChart = (data, legendAxisY, heightUser) => {
             .attr("transform", "translate(" + xScale(d.values[d.values.length - 1][objX]) + "," + yScale(d.values[d.values.length - 1][objY]) + ")")
             .style("font", "10px sans-serif")
             .text(d.key); // Showing data keys
+
+        // Add the scatterplot
+        svg.selectAll("dot")
+            .data(d.values)
+            .enter().append("circle")
+            .attr("r", 5)
+            .attr("class", "circle")
+            .attr("opacity",0)
+            .attr("cx", (d) => xScale(d[objX]))
+            .attr("cy", (d) => yScale(d[objY]))
+            .on("mouseover", (d) => {
+                div.style("opacity", 0.8);
+                div.html("<b>Date: </b>" + parseTime(d[objX]) + "<br/><b>" + legendAxisY + ":</b> " + d[objY])
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", (d) => {
+                div.style("opacity", 0);
+            });
     });
 
     // Responsive behavior
@@ -83,6 +109,20 @@ export const drawChart = (data, legendAxisY, heightUser) => {
                 .attr('d', lineGen(d.values));
             svg.select(".textKey" + i)
                 .attr("transform", "translate(" + xScale(d.values[d.values.length - 1][objX]) + "," + yScale(d.values[d.values.length - 1][objY]) + ")");
+
+            // Add the scatterplot
+            svg.selectAll(".circle")
+                .attr("cx", (d) => xScale(d[objX]))
+                .attr("cy", (d) => yScale(d[objY]))
+                .on("mouseover", (d) => {
+                    div.style("opacity", .8);
+                    div.html("<b>Date: </b>" + parseTime(d[objX]) + "<br/><b>" + legendAxisY + ":</b> " + d[objY])
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", (d) => {
+                    div.style("opacity", 0);
+                });
         });
 
         // Update the tick marks
