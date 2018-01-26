@@ -6,6 +6,8 @@ In this project, there have been used the next libraries to render the multiline
 * D3.js v4
 * React
 
+Component is published in the following site: https://juanbermudezpareja.github.io/LineChartReact/
+
 ## Instructions to run the project
 To run this command, in order to install all the library dependencies:
 
