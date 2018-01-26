@@ -9,8 +9,8 @@ export const App: React.StatelessComponent = () => {
   return (
     <div>
       <Header title="Multiline Chart" />
-      <MultiLineChart csvPath="assets/data.csv" dateFormat="%m/%d/%Y" height="500" legendAxisY="Precio, €"/>
-      <Table tsvPath="assets/data.3.tsv" />
+      <MultiLineChart tsvPath="assets/data.1.tsv" dateFormat="%Y%m%d" height="500" legendAxisY="Price, €"/>
+      <Table tsvPath="assets/data.1.tsv" />
     </div>
   );
 }
