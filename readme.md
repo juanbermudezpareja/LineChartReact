@@ -1,31 +1,29 @@
 # MultiLine Chart
 
-The propose of this project is showing an example of how to use a multiline chart and the different options that can be configure.
+The propose of this project is showing an example of how to use a multiline chart and the different options that can be configured.
 
 In this project, there have been used the next libraries to render the multiline chart:
 * D3.js v4
 * React
 
 ## Instructions to run the project
-To run this project, firstly, it is necessary to install dependencies:
+To run this command, in order to install all the library dependencies:
 
->npm install
+>npm i
 
-Secondly, next command will run the app:
+The next step is to run the project using the next command:
 
 >npm start
 
-Finally, open your browser in http://localhost:8080 and you will be able to see and play with the multiline chart.
+Open your favourite browser and type http://localhost:8080 in it. The multiline chart and a table is on it.
 
 ## Input data features
-The input data can be configured in three different way:
+Three different ways can be used to be shown datas in the chart:
 
 1. Using a demo harcoded data. In that case, we should not confire anything.
 2. Using a tsv file. In that case, we should inform the 
-parameter:
-    - tsvPath. Relative path where is located a tsv file with the datas.
-3. Using a csv file. In that case, we should inform the parameter:
-    - csvPath. Relative path where is located a tsv file with the datas.
+parameter tsvPath in the chart component.
+3. Using a csv file. In that case, we should inform the parameter csvPath in the chart component.
 
 ## Properties configuration
 
